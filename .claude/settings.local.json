@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"/Users/gracetoh/Desktop/Wedding Planner\" && ls -la && echo \"---\" && ls -la \"/Users/gracetoh/Desktop/\" | head -50)",
+      "Bash(python3 -c \"import openpyxl; print\\('openpyxl available'\\)\")",
+      "Bash(pip3 install *)",
+      "Bash(python3)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(cd \"/Users/gracetoh/Desktop/Wedding Planner/wedding-app\" && rm -f .env && rm -rf .claude && echo \"temp .env + nested .claude removed \\(real .env to be created by user\\)\")",
+      "Bash(git --version)",
+      "Bash(gh --version)"
+    ]
+  }
+}
