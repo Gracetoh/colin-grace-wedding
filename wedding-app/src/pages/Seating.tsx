@@ -10,7 +10,7 @@ import { Trash2, Users, GripVertical } from 'lucide-react'
 
 export default function Seating() {
   const { rows: guests, update } = useTable<Guest>('guests')
-  const { rows: tables } = useTable<Table>('tables')
+  const { rows: tables, update: updateTable } = useTable<Table>('tables')
   const [activeId, setActiveId] = useState<string | null>(null)
   const [onlyRsvp, setOnlyRsvp] = useState(true)
 
@@ -72,6 +72,7 @@ export default function Seating() {
               key={t.id}
               table={t}
               guests={byTable(t.id)}
+              onRename={(label) => updateTable(t.id, { label })}
             />
           ))}
         </div>
@@ -102,9 +103,9 @@ function GuestChip({ guest, overlay }: { guest: Guest; overlay?: boolean }) {
 }
 
 function TableCard({
-  table, guests,
+  table, guests, onRename,
 }: {
-  table: Table; guests: Guest[]
+  table: Table; guests: Guest[]; onRename: (label: string) => void
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: `table:${table.id}` })
   const over = guests.length > table.capacity
@@ -112,7 +113,15 @@ function TableCard({
   return (
     <Card className={`p-3 transition ${isOver ? 'ring-2 ring-blush-400 bg-blush-50/50' : ''}`}>
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-display text-lg text-blush-700">{table.label}</h3>
+        <input
+          defaultValue={table.label}
+          onBlur={(e) => {
+            if (e.target.value !== table.label && e.target.value.trim()) {
+              onRename(e.target.value)
+            }
+          }}
+          className="font-display text-lg text-blush-700 bg-transparent outline-none border-b-2 border-transparent hover:border-blush-300 focus:border-blush-500 w-full max-w-xs"
+        />
         <span className={`text-xs font-semibold flex items-center gap-1 px-2 py-0.5 rounded-full ${over ? 'bg-red-100 text-red-600' : 'bg-sage-100 text-sage-700'}`}>
           <Users className="w-3 h-3" />
           {guests.length}/{table.capacity}
